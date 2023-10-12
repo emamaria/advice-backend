@@ -12,7 +12,12 @@ app.use(cors());
 
 app.use( express.static('public'))
 
+app.use(express.json())
+
 dbConnection()
+
+
+app.use('/api/users', require('./routes/users'));
 
 
 app.listen(process.env.PORT, ()=> {
