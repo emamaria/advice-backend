@@ -4,13 +4,15 @@ const express  = require('express');
 
 const cors = require('cors')
 
+const { dbConnection } = require('./db/db')
+
 const app = express();
 
 app.use(cors());
 
 app.use( express.static('public'))
 
-
+dbConnection()
 
 
 app.listen(process.env.PORT, ()=> {
