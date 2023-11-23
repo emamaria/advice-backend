@@ -19,7 +19,7 @@ const AdviceSchema = Schema({
     }
 })
 
-UserSchema.method('toJSON', function(){
+AdviceSchema.method('toJSON', function(){
   const {__v,...object } = this.toObject()
   return object;
 })
