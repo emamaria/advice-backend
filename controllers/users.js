@@ -6,12 +6,20 @@ const User = require('../models/user');
 const getUsers =  async(req, res = response) =>{
 
 
+    
+
     try {
+
+        const users = await User.find()
         res.json({
-            msg: "get users"
+            ok: true,
+            users
           })
     } catch (error) {
-         console.log("get users error")
+        res.status(500).json({
+            ok:false,
+            msg: "unexpected error"
+         })
     }
      
 }
@@ -25,7 +33,10 @@ const getUser =  async(req, res = response) =>{
             msg: `get user ${req.params.id}`
           })
     } catch (error) {
-         console.log("get users error")
+        res.status(500).json({
+            ok:false,
+            msg: "unexpected error"
+         })
     }
      
 }
