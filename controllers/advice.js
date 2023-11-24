@@ -5,13 +5,21 @@ const Advice = require('../models/advice');
 
 const getAllAdvice =  async(req, res = response) =>{
 
-
+  
     try {
-        res.json({
-            msg: "get Alladvice"
+
+        const advise = await Advice.find()
+                                   .populate('userId', 'name email')
+        res.status(200).json({
+           ok: true,
+           advise
           })
     } catch (error) {
-         console.log("get advice error")
+         res.status(500).json({
+            ok: false,
+            msg: "unexpected error"
+         })
+         
     }
      
 }
