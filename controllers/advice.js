@@ -72,12 +72,32 @@ const createAdvice =  async(req, res = response) =>{
 const updateAdvice = async(req, res = response) =>{
 
 
+    const {id} = req.params
     try {
-        res.json({
-            msg: `upate ${req.params.id}`
+     
+        const adviceDB = await Advice.findById(id)
+
+        const {userId, ...updateFields} = req.body
+
+        if(!adviceDB){
+            return res.status(404).json({
+               ok: false,
+               msg: 'advice with this  id not exists'
+            })
+         }
+
+         const updatedAdvice = await Advice.findByIdAndUpdate(id, updateFields ,{new: true} );
+   
+        res.status(200).json({
+            ok:true,
+            updatedAdvice,
+           
           })
     } catch (error) {
-         console.log("update advice error")
+        res.status(500).json({
+            ok: false,
+            msg: 'Unexpected error'
+           })
     }
      
 }
