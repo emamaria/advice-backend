@@ -28,12 +28,25 @@ const getAllAdvice =  async(req, res = response) =>{
 const getOneAdvice =  async(req, res = response) =>{
 
 
+   
+    const {id} = req.params;
+
     try {
-        res.json({
-            msg: `get advice ${req.params.id}`
-          })
+        
+        const adviceDB = await Advice.findById(id)
+                                     .populate('userId', 'name email')
+        if(!adviceDB){
+            return res.status(404).json({
+                ok: false,
+                msg: "doesnt exist advice with this id"
+            })
+        }
+        res.status(200).json(adviceDB)
     } catch (error) {
-         console.log("get advice error")
+        res.status(500).json({
+            ok:false,
+            msg: "unexpected error"
+         })
     }
      
 }
@@ -84,6 +97,7 @@ const updateAdvice = async(req, res = response) =>{
     try {
      
         const adviceDB = await Advice.findById(id)
+        //el userId no se debe cambiar
 
         const {userId, ...updateFields} = req.body
 
