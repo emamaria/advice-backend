@@ -3,15 +3,13 @@ const { response } = require('express');
 const User = require('../models/user');
 
 
-const getUsers =  async(req, res = response) =>{
+const getUsers = async(req, res = response) =>{
 
 
-    
-
-    try {
+  try {
 
         const users = await User.find()
-        res.json({
+        res.status(200).json({
             ok: true,
             users
           })
@@ -27,11 +25,19 @@ const getUsers =  async(req, res = response) =>{
 
 const getUser =  async(req, res = response) =>{
 
+    const {id} = req.params;
 
     try {
-        res.json({
-            msg: `get user ${req.params.id}`
-          })
+        
+        const userDB = await User.findById(id)
+
+        if(!userDB){
+            return res.status(404).json({
+                ok: false,
+                msg: "doesnt exist user with this id"
+            })
+        }
+        res.status(200).json(userDB)
     } catch (error) {
         res.status(500).json({
             ok:false,
