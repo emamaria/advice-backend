@@ -87,13 +87,45 @@ const createUser =  async(req, res = response) =>{
 
 const updateUser =  async(req, res = response) =>{
 
+    const {id} = req.params
 
     try {
-        res.json({
-            msg: `upate ${req.params.id}`
+
+        const userDB = await User.findById(id)
+
+        if(!userDB){
+            return res.status(404).json({
+                ok:false,
+                msg: "does not exist user with this id"
+            })
+        }
+
+        const {email, ...restFields} = req.body
+
+        if(userDB.email !== email){
+            const emailExists = await User.findOne({email})
+
+            if(emailExists){
+                return res.status(400).json({
+                    ok: false,
+                    msg:'already exists user with this email'
+                })
+            }
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, {new:true})
+
+        res.status(200).json({
+            ok: true,
+            user: updatedUser
           })
     } catch (error) {
-         console.log("update user error")
+            
+        res.status(500).json({
+            ok:false,
+            msg: "unexpected error"
+        })
+         
     }
      
 }
