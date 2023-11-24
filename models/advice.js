@@ -10,11 +10,12 @@ const AdviceSchema = Schema({
         type:String,
         trim: true
     },
-    user: {
+    userId: {
         required: true,
         type: Schema.Types.ObjectId,
         ref: 'User',
-        trim: true
+        trim: true,
+        unique:true
     },
     like: {
         type: Number,

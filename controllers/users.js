@@ -2,6 +2,8 @@ const { response } = require('express');
 
 const User = require('../models/user');
 
+const Advice = require('../models/advice')
+
 
 const getUsers = async(req, res = response) =>{
 
@@ -141,9 +143,15 @@ const deleteUser =  async(req, res = response) =>{
 
         console.log(id)
 
-        const userDB = await User.findById(id)
-
+       // const userDB = await User.findById(id)
         
+        // const adviceDB = await Advice.findOne({userId:id})
+
+    //al eliminar usuario tb eliminar su advice si tiene
+       const [userDB, adviceDB] = await Promise.all([
+        User.findById(id),
+        Advice.findOne({userId:id})
+       ])
 
         if(!userDB){
             return res.status(404).json({
@@ -153,6 +161,11 @@ const deleteUser =  async(req, res = response) =>{
         }
 
         await User.findByIdAndDelete(id)
+
+        if(adviceDB){
+            await Advice.findByIdAndDelete(adviceDB.id)
+        }
+      
 
         res.status(200).json({
             ok:true,
