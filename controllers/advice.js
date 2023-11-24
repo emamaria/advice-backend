@@ -106,13 +106,29 @@ const updateAdvice = async(req, res = response) =>{
 
 const deleteAdvice =  async(req, res = response) =>{
 
+  const {id} = req.params
 
     try {
-        res.json({
-            msg: `delete ${req.params.id}`
+
+    const adviceDB = await Advice.findById(id)
+
+    if(!adviceDB){
+        return res.status(404).json({
+           ok: false,
+           msg: 'Does not exist advice with this id'
+        })
+     }
+  
+     await Advice.findByIdAndDelete(id)
+        res.status(200).json({
+            ok: false,
+            msg: `deleted advice`
           })
     } catch (error) {
-         console.log("delete advice error")
+        res.status(500).json({
+            ok: true,
+            msg: "unexpected error"
+          })
     }
      
 }
