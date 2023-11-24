@@ -3,20 +3,26 @@ const {Schema, model} = require('mongoose');
 const AdviceSchema = Schema({
     advice: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     img: {
         type:String,
+        trim: true
     },
     user: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        trim: true
     },
     like: {
         type: Number,
-        default: 0
+        default: 0,
+        trim: true
     }
+},{
+    timestamps: true,
 })
 
 AdviceSchema.method('toJSON', function(){

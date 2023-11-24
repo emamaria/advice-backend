@@ -34,14 +34,35 @@ const getUser =  async(req, res = response) =>{
 
 const createUser =  async(req, res = response) =>{
 
-  
+    const {email, password, name} = req.body
     
     try {
+
+        const emailExists = await User.findOne({email})
+
+        console.log(emailExists)
+       
+        if(emailExists){
+            return res.status(400).json({
+                ok:false,
+                msg:'This email already exists'
+            })
+        }
+
+        const user = new User(req.body)
+
+        await user.save()
+
         res.json({
-             ...req.body
-          })
+            ok: true,
+            user
+        })
     } catch (error) {
-         console.log("create user error")
+         console.log(error)
+         res.status(500).json({
+            ok:false,
+            msg: "unexpected error"
+         })
     }
      
 }
