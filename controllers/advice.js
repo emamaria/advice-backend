@@ -58,6 +58,13 @@ const createAdvice =  async(req, res = response) =>{
   const {advice, img, userId, like} = req.body
     
     try {
+
+       if(userId == null){
+        return res.status(400).json({
+            ok: false,
+            msg: "please send the userId"
+        })
+       }
        //si ya existe un advice de ese usuario, no debo crear mas, solo actualizar
        //en el front miro si existe un advice con ese id de usuario y si exite hago put en vez de post
         const userIdExists = await Advice.findOne({userId})
@@ -71,6 +78,8 @@ const createAdvice =  async(req, res = response) =>{
             adviceId: userIdExists.id
            })
         }
+
+      
 
         const advice  = new Advice(req.body)
 
