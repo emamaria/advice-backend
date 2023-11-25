@@ -79,9 +79,10 @@ const createAdvice =  async(req, res = response) =>{
            })
         }
 
-      
+        //debo crear controlador aparte para like no permitir cambiar ese campo por este cobtrolador
 
-        const advice  = new Advice(req.body)
+        const {like, ...restFields} = req.body
+        const advice  = new Advice(restFields)
 
         await advice.save();
 
@@ -108,7 +109,7 @@ const updateAdvice = async(req, res = response) =>{
         const adviceDB = await Advice.findById(id)
         //el userId no se debe cambiar
 
-        const {userId, ...updateFields} = req.body
+        const {userId,like,...updateFields} = req.body
 
         if(!adviceDB){
             return res.status(404).json({
@@ -116,6 +117,8 @@ const updateAdvice = async(req, res = response) =>{
                msg: 'advice with this  id not exists'
             })
          }
+
+         
 
          const updatedAdvice = await Advice.findByIdAndUpdate(id, updateFields ,{new: true} );
    

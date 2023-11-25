@@ -1,5 +1,7 @@
 
 const { Router } = require('express');
+const { check } = require('express-validator')
+const {fieldsValidation} = require("../middlewares/fields-validation")
 
 const {getAllAdvice, getOneAdvice, createAdvice, deleteAdvice, updateAdvice} = require('../controllers/advice')
 
@@ -11,9 +13,12 @@ router.get('/', getAllAdvice)
 
 router.get('/:id', getOneAdvice)
 
-router.post('/', createAdvice)
+router.post('/',[
+    check('advice', 'Advice is required').not().isEmpty(),
+    check('userId', 'userId is required').not().isEmpty(),
+    ], fieldsValidation, createAdvice)
 
-router.put('/:id', updateAdvice)
+router.put('/:id', check('advice', 'Advice is required').not().isEmpty(),fieldsValidation, updateAdvice)
 
 router.delete('/:id', deleteAdvice)
 
