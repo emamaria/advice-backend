@@ -113,7 +113,7 @@ const updateUser =  async(req, res = response) =>{
             })
         }
 
-        const {email, ...restFields} = req.body
+        const {email, password, name} = req.body
 
         if(userDB.email !== email){
             const emailExists = await User.findOne({email})
@@ -125,6 +125,11 @@ const updateUser =  async(req, res = response) =>{
                 })
             }
         }
+
+        const salt = bcrypt.genSaltSync()
+
+        
+        req.body.password = bcrypt.hashSync(password, salt)
 
         const updatedUser = await User.findByIdAndUpdate(id, req.body, {new:true})
 
