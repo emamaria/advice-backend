@@ -4,7 +4,9 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/user');
 
-const Advice = require('../models/advice')
+const Advice = require('../models/advice');
+
+const { generateJWT } = require('../helpers/jwt');
 
 
 const getUsers = async(req, res = response) =>{
@@ -79,13 +81,14 @@ const createUser =  async(req, res = response) =>{
         
         user.password = bcrypt.hashSync(password, salt)
  
-      
-
         await user.save()
+
+        const token = await generateJWT(user.id, name, email)
 
         res.json({
             ok: true,
-            user
+            user,
+            token
         })
     } catch (error) {
          console.log(error)
