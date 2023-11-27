@@ -2,6 +2,7 @@ const { response } = require('express');
 
 
 const Advice = require('../models/advice');
+const { deleteImgCloudinary } = require('../middlewares/deleteFile');
 
 
 const getAllAdvice =  async(req, res = response) =>{
@@ -124,6 +125,8 @@ const updateAdvice = async(req, res = response) =>{
 
          const updatedAdvice = await Advice.findByIdAndUpdate(id, updateFields ,{new: true} );
    
+         if(req.file)deleteImgCloudinary(adviceDB.img)
+         
         res.status(200).json({
             ok:true,
             updatedAdvice,
@@ -155,7 +158,10 @@ const deleteAdvice =  async(req, res = response) =>{
         })
      }
   
-     await Advice.findByIdAndDelete(id)
+    await Advice.findByIdAndDelete(id)
+
+     if(adviceDB.img)deleteImgCloudinary(adviceDB.img)
+
         res.status(200).json({
             ok: false,
             msg: `deleted advice`
