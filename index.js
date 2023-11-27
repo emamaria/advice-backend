@@ -4,7 +4,8 @@ const express  = require('express');
 
 const cors = require('cors')
 
-const { dbConnection } = require('./db/db')
+const { dbConnection } = require('./db/db');
+const { configCloudinary } = require('./cloudinary/config');
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(express.json())
 
 dbConnection()
 
+
+configCloudinary();
 
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));

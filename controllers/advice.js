@@ -1,5 +1,6 @@
 const { response } = require('express');
 
+
 const Advice = require('../models/advice');
 
 
@@ -55,7 +56,7 @@ const getOneAdvice =  async(req, res = response) =>{
 
 const createAdvice =  async(req, res = response) =>{
 
-  const {advice, img, userId, like} = req.body
+  const {advice, userId, like} = req.body
     
     try {
 
@@ -80,9 +81,10 @@ const createAdvice =  async(req, res = response) =>{
         }
 
         //debo crear controlador aparte para like no permitir cambiar ese campo por este cobtrolador
-
+        
         const {like, ...restFields} = req.body
         const advice  = new Advice(restFields)
+        if(req.file) advice.img = req.file.path
 
         await advice.save();
 
@@ -108,7 +110,7 @@ const updateAdvice = async(req, res = response) =>{
      
         const adviceDB = await Advice.findById(id)
         //el userId no se debe cambiar
-
+        if(req.file) req.body.img = req.file.path
         const {userId,like,...updateFields} = req.body
 
         if(!adviceDB){
