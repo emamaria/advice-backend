@@ -19,7 +19,7 @@ router.post('/',validateJWT, upload.single('image'),[
     check('userId', 'userId is required').not().isEmpty(),
     ], fieldsValidation, createAdvice)
 
-router.put('/:id', validateJWT, upload.single('image'), check('advice', 'Advice is required').not().isEmpty(),fieldsValidation, updateAdvice)
+router.patch('/:id', validateJWT, upload.single('image'), updateAdvice)
 
 router.delete('/:id',validateJWT, deleteAdvice)
 

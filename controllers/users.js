@@ -9,6 +9,8 @@ const Advice = require('../models/advice');
 const { generateJWT } = require('../helpers/jwt');
 
 
+
+
 const getUsers = async(req, res = response) =>{
 
 
@@ -105,6 +107,12 @@ const updateUser =  async(req, res = response) =>{
 
     const {id} = req.params
 
+
+        // check('email', 'Email is required with correct format').optional().isEmail(),
+        // check('password', 'Password requires at least 8 characters that contains 1 number, 1 special character, 1 uppercase and 1 lowercase').optional().isStrongPassword(),
+    
+
+   
     try {
 
         const userDB = await User.findById(id)
@@ -116,10 +124,11 @@ const updateUser =  async(req, res = response) =>{
             })
         }
 
-        const {email, password, name} = req.body
-
-        if(userDB.email !== email){
-            const emailExists = await User.findOne({email})
+        // const {email, password, name} = req.body
+      
+        
+        if(req.body.email && userDB.email !== req.body.email){
+            const emailExists = await User.findOne({email: req.body.email})
 
             if(emailExists){
                 return res.status(400).json({
@@ -129,11 +138,12 @@ const updateUser =  async(req, res = response) =>{
             }
         }
 
-        const salt = bcrypt.genSaltSync()
-
+        if(req.body.password){
+            const salt = bcrypt.genSaltSync()
+            req.body.password = bcrypt.hashSync(req.body.password, salt)
+    
+        }
         
-        req.body.password = bcrypt.hashSync(password, salt)
-
         const updatedUser = await User.findByIdAndUpdate(id, req.body, {new:true})
 
         res.status(200).json({
