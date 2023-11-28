@@ -17,7 +17,11 @@ router.post('/',[
     check('password', 'Password requires at least 8 characters that contains 1 number, 1 special character, 1 uppercase and 1 lowercase').isStrongPassword(),
     ], fieldsValidation, createUser)
 
-router.patch('/:id',validateJWT,updateUser)
+router.patch('/:id',validateJWT,[
+    check('name').optional().not().isEmpty().withMessage('Name is required'),
+    check('email').optional().isEmail().withMessage('Email is required with correct format'),
+    check('password').optional().isStrongPassword().withMessage('Password requires at least 8 characters that contains 1 number, 1 special character, 1 uppercase and 1 lowercase'),
+    ], fieldsValidation, updateUser)
 
 router.delete('/:id',validateJWT, deleteUser)
 
