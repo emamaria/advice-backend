@@ -20,6 +20,7 @@ const addLike = async(req, res = response) => {
     }
 
           adviceDB.likedUsersId.push(likedUserId)
+          adviceDB.like += 1
           await adviceDB.save()
 
     res.status(200).json({
@@ -30,6 +31,8 @@ const addLike = async(req, res = response) => {
 
     
 }
+
+
 
 module.exports = {
     addLike

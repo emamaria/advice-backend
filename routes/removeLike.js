@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 
 const {fieldsValidation} = require("../middlewares/fields-validation");
 const { validateJWT } = require('../middlewares/jwt-validation');
-const {addLike} = require('../controllers/addLike')
+const {removeLike} = require('../controllers/removeLike')
 const router = Router();
 
 
@@ -11,8 +11,8 @@ const router = Router();
 
 
 router.patch('/:id',validateJWT,[
-    check('likedUsersId', 'User id is required').not().isEmpty(),
-    ], fieldsValidation, addLike)
+    check('removelikeUsersId', 'User id is required').not().isEmpty(),
+    ], fieldsValidation, removeLike)
 
 
 
