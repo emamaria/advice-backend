@@ -8,7 +8,8 @@ const AdviceSchema = Schema({
     },
     img: {
         type:String,
-        trim: true
+        trim: true,
+        default: ""
     },
     userId: {
         required: true,
@@ -27,6 +28,7 @@ const AdviceSchema = Schema({
             type: Schema.Types.ObjectId,
             ref: 'User',
             trim: true,
+            default: []
         }
     ]
 },{
