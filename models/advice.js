@@ -21,7 +21,14 @@ const AdviceSchema = Schema({
         type: Number,
         default: 0,
         trim: true
-    }
+    },
+    likedUsersId:[
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            trim: true,
+        }
+    ]
 },{
     timestamps: true,
 })

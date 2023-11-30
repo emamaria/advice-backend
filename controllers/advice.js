@@ -83,7 +83,7 @@ const createAdvice =  async(req, res = response) =>{
 
         //debo crear controlador aparte para like no permitir cambiar ese campo por este cobtrolador
         
-        const {like, ...restFields} = req.body
+        const {like,likedUsersId,...restFields} = req.body
         const advice  = new Advice(restFields)
         if(req.file) advice.img = req.file.path
 
@@ -94,9 +94,11 @@ const createAdvice =  async(req, res = response) =>{
              advice
           })
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             ok: false,
-            msg: "unexpected error"
+            msg: "unexpected error",
+            error
          })
     }
      
@@ -112,7 +114,7 @@ const updateAdvice = async(req, res = response) =>{
         const adviceDB = await Advice.findById(id)
         //el userId no se debe cambiar
         if(req.file) req.body.img = req.file.path
-        const {userId,like,...updateFields} = req.body
+        const {userId,like,likedUsersId,...updateFields} = req.body
 
         if(!adviceDB){
             return res.status(404).json({
@@ -133,9 +135,11 @@ const updateAdvice = async(req, res = response) =>{
            
           })
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             ok: false,
-            msg: 'Unexpected error'
+            msg: 'Unexpected error',
+            error
            })
     }
      
