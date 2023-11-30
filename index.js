@@ -23,6 +23,7 @@ configCloudinary();
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/advice', require('./routes/advice'));
+app.use('/api/like', require('./routes/addLike'));
 
 app.listen(process.env.PORT, ()=> {
     console.log(`Server running on port ${process.env.PORT}`)
