@@ -12,12 +12,16 @@ const addLike = async(req, res = response) => {
 
     const adviceDB = await Advice.findById(id)
 
-    if(adviceDB.likedUsersId.includes(likedUserId)){
-        return res.status(404).json({
-            ok: false,
-            msg: 'You have alredy liked this advice'
-         })
+    if(adviceDB.likedUsersId !== null){
+
+        if(adviceDB.likedUsersId.includes(likedUserId)){
+            return res.status(404).json({
+                ok: false,
+                msg: 'You have alredy liked this advice'
+             })
+        }
     }
+   
 
           adviceDB.likedUsersId.push(likedUserId)
           adviceDB.like += 1

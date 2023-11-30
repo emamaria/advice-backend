@@ -14,16 +14,25 @@ const removeLike = async(req, res = response) => {
 
     const adviceDB = await Advice.findById(id)
 
-    
-    if(!adviceDB.likedUsersId.includes(removelikeUserId)){
+    if(adviceDB.likedUsersId === null){
         return res.status(404).json({
             ok: false,
             msg: 'You did not give like to this advice'
          })
     }
 
+    if(adviceDB.likedUsersId !== null){
+        if(!adviceDB.likedUsersId.includes(removelikeUserId)){
+            return res.status(404).json({
+                ok: false,
+                msg: 'You did not give like to this advice'
+             })
+        }
+    }
     
-         adviceDB.likedUsersId.pull(removelikeUserId)
+
+    
+         await adviceDB.likedUsersId.pull(removelikeUserId)
          adviceDB.like -= 1
          await adviceDB.save()
 

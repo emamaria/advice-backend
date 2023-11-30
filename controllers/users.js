@@ -166,6 +166,10 @@ const updateUser =  async(req, res = response) =>{
 const deleteUser =  async(req, res = response) =>{
 
 
+ let userLikedAdviseIdList = []
+
+
+
     try {
 
         const {id} = req.params
@@ -173,9 +177,38 @@ const deleteUser =  async(req, res = response) =>{
         console.log(id)
 
        // const userDB = await User.findById(id)
-        
-        // const adviceDB = await Advice.findOne({userId:id})
+       const adviseDocs = await Advice.find()
 
+       console.log("advise db", adviseDocs)
+
+
+       //almaceno los ids de advise donde este usuario hizo like
+       adviseDocs.forEach(advise => {
+
+        if(advise.likedUsersId !== null){
+            if(advise.likedUsersId.includes(id)){
+                userLikedAdviseIdList.push(advise.id)  
+            }
+        }
+       
+       })
+
+       console.log(userLikedAdviseIdList)
+
+    //    console.log("advisedocs", adviseDocs)
+
+       //eliminar de cada advice que tiene like de ese usuario
+       //el id de ese usuario
+
+       for(let i = 0; i < userLikedAdviseIdList.length; i++){
+        const advice = await Advice.findByIdAndUpdate(userLikedAdviseIdList[i],{$pull:{likedUsersId:id}},{new:true})
+        console.log(advice)
+      }
+     
+     
+     
+       
+      
     //al eliminar usuario tb eliminar su advice si tiene
        const [userDB, adviceDB] = await Promise.all([
         User.findById(id),
@@ -201,6 +234,7 @@ const deleteUser =  async(req, res = response) =>{
             msg: "deleted user"
           })
     } catch (error) {
+           console.log(error)
         res.status(500).json({
             ok:false,
             msg: "something went wrong"
