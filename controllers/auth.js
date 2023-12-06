@@ -13,7 +13,7 @@ const login = async(req, res = response) => {
         const userDB = await User.findOne({email})
 
         if(!userDB){
-            res.status(404).json({
+           return res.status(404).json({
                 ok:false,
                 msg: 'this email does not exist'
             })
@@ -35,10 +35,10 @@ const login = async(req, res = response) => {
            userDB,
            token
         })
-    } catch (error) {
+    }catch(error){
         res.status(500).json({
             ok:false,
-            msg: "unexpected error"
+            msg:"unexpected error"
         })
     }
 }
