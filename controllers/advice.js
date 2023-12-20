@@ -167,12 +167,12 @@ const deleteAdvice =  async(req, res = response) =>{
      if(adviceDB.img)deleteImgCloudinary(adviceDB.img)
 
         res.status(200).json({
-            ok: false,
+            ok: true,
             msg: `deleted advice`
           })
     } catch (error) {
         res.status(500).json({
-            ok: true,
+            ok: false,
             msg: "unexpected error"
           })
     }
