@@ -55,6 +55,7 @@ const getOneAdvice =  async(req, res = response) =>{
 
 
 
+
 const createAdvice =  async(req, res = response) =>{
 
   const {advice, userId, like} = req.body

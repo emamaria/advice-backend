@@ -25,6 +25,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/advice', require('./routes/advice'));
 app.use('/api/like', require('./routes/addLike'));
 app.use('/api/removelike', require('./routes/removeLike'));
+app.use('/api/adviceuser', require('./routes/adviceByUserId'));
 
 app.listen(process.env.PORT, ()=> {
     console.log(`Server running on port ${process.env.PORT}`)
