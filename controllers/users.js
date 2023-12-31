@@ -145,10 +145,12 @@ const updateUser =  async(req, res = response) =>{
         }
         
         const updatedUser = await User.findByIdAndUpdate(id, req.body, {new:true})
-
+         
+        const token = await generateJWT(id, updatedUser.name, updatedUser.email)
         res.status(200).json({
-            ok: true,
-            user: updatedUser
+            ok: true,   
+            user: updatedUser,
+            token
           })
     } catch (error) {
             

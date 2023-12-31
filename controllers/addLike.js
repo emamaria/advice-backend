@@ -14,6 +14,8 @@ const addLike = async(req, res = response) => {
 
     if(adviceDB.likedUsersId !== null){
 
+        
+
         if(adviceDB.likedUsersId.includes(likedUserId)){
             return res.status(404).json({
                 ok: false,
