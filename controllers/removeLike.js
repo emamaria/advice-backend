@@ -17,7 +17,7 @@ const removeLike = async(req, res = response) => {
     if(adviceDB.likedUsersId === null){
         return res.status(404).json({
             ok: false,
-            msg: 'You did not give like to this advice'
+            msg: "You didn't give like to this advice"
          })
     }
 
@@ -25,7 +25,7 @@ const removeLike = async(req, res = response) => {
         if(!adviceDB.likedUsersId.includes(removelikeUserId)){
             return res.status(404).json({
                 ok: false,
-                msg: 'You did not give like to this advice'
+                msg: "You didn't give like to this advice"
              })
         }
     }
